@@ -4,20 +4,18 @@
 
 int main()
 {
-    // Bestem hva som skjer når nettleseren ber om forsiden "/".
+    // GET /: Send nettsiden til nettleseren.
     drogon::app().registerHandler(
         "/",
         [](const drogon::HttpRequestPtr& request,
            std::function<void(const drogon::HttpResponsePtr&)>&& sendResponse)
         {
-            // Opprett et HTTP-svar.
             auto response = drogon::HttpResponse::newHttpResponse();
-
-            // Fortell nettleseren at innholdet er HTML.
             response->setContentTypeCode(drogon::CT_TEXT_HTML);
 
-            // HTML-koden som nettleseren skal vise.
-            response->setBody(R"(
+            // En navngitt råstreng lar HTML-en inneholde både
+            // anførselstegn, parenteser og linjeskift.
+            response->setBody(R"HTML(
                 <!DOCTYPE html>
                 <html lang="nb">
                 <head>
@@ -26,23 +24,67 @@ int main()
                 </head>
                 <body>
                     <h1>Robotbil</h1>
-                    <p>Nettsiden leveres av C++-programmet ditt!</p>
+
+                    <button onclick="sendFremover()">Fremover</button>
+                    <p id="status">Venter på kommando.</p>
+
+                    <script>
+                        // Denne funksjonen kjører i nettleseren.
+                        async function sendFremover() {
+                            const statusfelt =
+                                document.getElementById("status");
+
+                            statusfelt.textContent = "Sender...";
+
+                            try {
+                                // Send kommandoen til C++-serveren.
+                                const svar = await fetch("/fremover", {
+                                    method: "POST"
+                                });
+
+                                if (!svar.ok) {
+                                    throw new Error("Serverfeil");
+                                }
+
+                                // Vis teksten som serveren svarer med.
+                                statusfelt.textContent = await svar.text();
+                            } catch (feil) {
+                                statusfelt.textContent =
+                                    "Kommandoen kunne ikke bekreftes.";
+                            }
+                        }
+                    </script>
                 </body>
                 </html>
-            )");
+            )HTML");
 
-            // Send svaret tilbake til nettleseren.
             sendResponse(response);
         },
         {drogon::Get}
     );
 
+    // POST /fremover: Motta kommandoen fra knappen.
+    drogon::app().registerHandler(
+        "/fremover",
+        [](const drogon::HttpRequestPtr& request,
+           std::function<void(const drogon::HttpResponsePtr&)>&& sendResponse)
+        {
+            // Foreløpig tester vi ved å skrive til terminalen.
+            std::cout << "Fremover" << std::endl;
+
+            // Bekreft til nettleseren at kommandoen er mottatt.
+            auto response = drogon::HttpResponse::newHttpResponse();
+            response->setContentTypeCode(drogon::CT_TEXT_PLAIN);
+            response->setBody("Fremover mottatt!");
+
+            sendResponse(response);
+        },
+        {drogon::Post}
+    );
+
     std::cout << "Serveren starter: http://127.0.0.1:8080\n";
 
-    // Lytt etter forbindelser fra denne PC-en på port 8080.
     drogon::app().addListener("127.0.0.1", 8080);
-
-    // Hold serveren i gang og behandle forespørsler.
     drogon::app().run();
 
     return 0;
