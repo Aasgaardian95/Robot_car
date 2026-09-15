@@ -37,4 +37,23 @@ async function sendKommando(kommando) {
   } catch (feil) {
     statusfelt.textContent = "Kommandoen kunne ikke bekreftes.";
   }
+
+  const kamerabilde = document.getElementById("kamerabilde");
+
+  function hentKamerabilde() {
+    kamerabilde.src = "/kamera.jpg?t=" + Date.now();
+  }
+
+  // Hent neste bilde 200 ms etter at forrige er ferdig lastet.
+  kamerabilde.addEventListener("load", () => {
+    setTimeout(hentKamerabilde, 200);
+  });
+
+  // Hvis innlasting feiler, prøv igjen etter ett sekund.
+  kamerabilde.addEventListener("error", () => {
+    setTimeout(hentKamerabilde, 1000);
+  });
+
+  // Start oppdateringen.
+  hentKamerabilde();
 }

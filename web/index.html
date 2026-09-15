@@ -2,19 +2,38 @@
 <html lang="nb">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Robotbil</title>
+
+    <!-- Last JavaScript etter at HTML-en er lest. -->
     <script src="/app.js" defer></script>
   </head>
   <body>
     <h1>Robotbil</h1>
 
-    <!-- data-kommando angir hva hver knapp skal sende. -->
-    <button data-kommando="fremover">Fremover</button>
-    <button data-kommando="bakover">Bakover</button>
-    <button data-kommando="venstre">Venstre</button>
-    <button data-kommando="hoyre">Høyre</button>
-    <button data-kommando="stopp">Stopp</button>
+    <section>
+      <h2>Kamera</h2>
 
-    <p id="status">Venter på kommando.</p>
+      <!-- JavaScript setter bildeadressen og oppdaterer bildet. -->
+      <img
+        id="kamerabilde"
+        alt="Venter på kamerabilde"
+        style="display: block; max-width: 100%; width: 640px"
+      />
+    </section>
+
+    <section>
+      <h2>Styring</h2>
+
+      <!-- JavaScript leser kommandoen fra data-kommando. -->
+      <button type="button" data-kommando="fremover">Fremover</button>
+      <button type="button" data-kommando="bakover">Bakover</button>
+      <button type="button" data-kommando="venstre">Venstre</button>
+      <button type="button" data-kommando="hoyre">Høyre</button>
+      <button type="button" data-kommando="stopp">Stopp</button>
+
+      <p id="status" aria-live="polite">Venter på kommando.</p>
+    </section>
   </body>
 </html>
