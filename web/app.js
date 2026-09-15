@@ -44,9 +44,9 @@ async function sendKommando(kommando) {
     kamerabilde.src = "/kamera.jpg?t=" + Date.now();
   }
 
-  // Hent neste bilde 200 ms etter at forrige er ferdig lastet.
+  // Hent neste bilde 50 ms etter at forrige er ferdig lastet.
   kamerabilde.addEventListener("load", () => {
-    setTimeout(hentKamerabilde, 200);
+    setTimeout(hentKamerabilde, 33);
   });
 
   // Hvis innlasting feiler, prøv igjen etter ett sekund.
