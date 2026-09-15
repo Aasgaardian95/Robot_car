@@ -1,6 +1,6 @@
 const statusfelt = document.getElementById("status");
 
-// Finn alle elementer som har attributtet data-kommando.
+// Finn alle styreknappene.
 const knapper = document.querySelectorAll("[data-kommando]");
 
 // Koble hver knapp til den samme funksjonen.
@@ -17,12 +17,10 @@ async function sendKommando(kommando) {
     const svar = await fetch("/kommando", {
       method: "POST",
 
-      // Fortell serveren at vi sender JSON.
       headers: {
         "Content-Type": "application/json",
       },
 
-      // Gjør objektet om til tekst som kan sendes.
       body: JSON.stringify({ kommando: kommando }),
     });
 
@@ -37,23 +35,25 @@ async function sendKommando(kommando) {
   } catch (feil) {
     statusfelt.textContent = "Kommandoen kunne ikke bekreftes.";
   }
+} // sendKommando avsluttes her.
 
-  const kamerabilde = document.getElementById("kamerabilde");
+// Kamerakoden ligger utenfor sendKommando.
+// Den kjøres når app.js lastes.
+const kamerabilde = document.getElementById("kamerabilde");
 
-  function hentKamerabilde() {
-    kamerabilde.src = "/kamera.jpg?t=" + Date.now();
-  }
-
-  // Hent neste bilde 50 ms etter at forrige er ferdig lastet.
-  kamerabilde.addEventListener("load", () => {
-    setTimeout(hentKamerabilde, 33);
-  });
-
-  // Hvis innlasting feiler, prøv igjen etter ett sekund.
-  kamerabilde.addEventListener("error", () => {
-    setTimeout(hentKamerabilde, 1000);
-  });
-
-  // Start oppdateringen.
-  hentKamerabilde();
+function hentKamerabilde() {
+  kamerabilde.src = "/kamera.jpg?t=" + Date.now();
 }
+
+// Hent neste bilde 33 ms etter at forrige er ferdig lastet.
+kamerabilde.addEventListener("load", () => {
+  setTimeout(hentKamerabilde, 33);
+});
+
+// Hvis innlasting feiler, prøv igjen etter ett sekund.
+kamerabilde.addEventListener("error", () => {
+  setTimeout(hentKamerabilde, 1000);
+});
+
+// Start kameraoppdateringen uten å vente på et knappetrykk.
+hentKamerabilde();
