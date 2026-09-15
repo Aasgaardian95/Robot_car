@@ -1,16 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="nb">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Robotbil</title>
-
-    <!-- Last JavaScript. defer gjør at HTML-en leses først. -->
     <script src="/app.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Robotbil</h1>
 
-    <button id="fremover-knapp">Fremover</button>
+    <!-- data-kommando angir hva hver knapp skal sende. -->
+    <button data-kommando="fremover">Fremover</button>
+    <button data-kommando="bakover">Bakover</button>
+    <button data-kommando="venstre">Venstre</button>
+    <button data-kommando="hoyre">Høyre</button>
+    <button data-kommando="stopp">Stopp</button>
+
     <p id="status">Venter på kommando.</p>
-</body>
+  </body>
 </html>

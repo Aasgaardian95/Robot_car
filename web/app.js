@@ -1,25 +1,39 @@
-// Finn knappen og statusfeltet i HTML-en.
-const fremoverKnapp = document.getElementById("fremover-knapp");
 const statusfelt = document.getElementById("status");
 
-// Kjør sendFremover når brukeren klikker på knappen.
-fremoverKnapp.addEventListener("click", sendFremover);
+// Finn alle elementer som har attributtet data-kommando.
+const knapper = document.querySelectorAll("[data-kommando]");
 
-async function sendFremover() {
-  statusfelt.textContent = "Sender...";
+// Koble hver knapp til den samme funksjonen.
+for (const knapp of knapper) {
+  knapp.addEventListener("click", () => {
+    sendKommando(knapp.dataset.kommando);
+  });
+}
+
+async function sendKommando(kommando) {
+  statusfelt.textContent = "Sender: " + kommando;
 
   try {
-    // Send kommandoen til C++-serveren.
-    const svar = await fetch("/fremover", {
+    const svar = await fetch("/kommando", {
       method: "POST",
+
+      // Fortell serveren at vi sender JSON.
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      // Gjør objektet om til tekst som kan sendes.
+      body: JSON.stringify({ kommando: kommando }),
     });
 
+    const melding = await svar.text();
+
     if (!svar.ok) {
-      throw new Error("Serverfeil");
+      statusfelt.textContent = "Avvist: " + melding;
+      return;
     }
 
-    // Vis bekreftelsen fra serveren.
-    statusfelt.textContent = await svar.text();
+    statusfelt.textContent = melding;
   } catch (feil) {
     statusfelt.textContent = "Kommandoen kunne ikke bekreftes.";
   }
