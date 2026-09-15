@@ -1,0 +1,171 @@
+/* Inkluder padding og kantlinjer i elementenes størrelse. */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1b3047, #0b111b 65%);
+  color: #edf4ff;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+main {
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 36px 20px;
+}
+
+.overtekst {
+  color: #71d8ee;
+  font-size: 12px;
+  letter-spacing: 3px;
+}
+
+h1 {
+  margin: 8px 0 28px;
+  font-size: clamp(32px, 5vw, 48px);
+}
+
+h2 {
+  margin: 0 0 20px;
+  font-size: 19px;
+}
+
+/* Kamera og kontrollpanel plasseres ved siden av hverandre. */
+.paneler {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+}
+
+.panel {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid #2a3a4f;
+  border-radius: 24px;
+  background: #131e2d;
+  box-shadow: 0 18px 45px #00000030;
+}
+
+#kamerabilde {
+  display: block;
+  width: 100%;
+  min-height: 180px;
+  border-radius: 14px;
+  background: #080e17;
+}
+
+.styring-panel {
+  text-align: center;
+}
+
+/* Et rutenett med 3 × 3 felt inni en sirkel. */
+.kontrollhjul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+
+  width: 100%;
+  max-width: 310px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  padding: 16px;
+
+  border-radius: 50%;
+  border: 1px solid #3c536d;
+  background: radial-gradient(circle, #263e56, #101b2a);
+  box-shadow: inset 0 0 25px #00000055;
+}
+
+.kontrollhjul button {
+  min-width: 0;
+  padding: 4px;
+  border: 1px solid #4a6682;
+  border-radius: 50%;
+  color: #edf4ff;
+  background: linear-gradient(#304b65, #1b3046);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    transform 120ms,
+    background 120ms,
+    box-shadow 120ms;
+}
+
+.retning {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+
+.pil {
+  font-size: 27px;
+  line-height: 1;
+}
+
+/* Rad og kolonne bestemmer hvor hver knapp havner. */
+.fremover {
+  grid-area: 1 / 2;
+}
+.venstre {
+  grid-area: 2 / 1;
+}
+.stopp {
+  grid-area: 2 / 2;
+}
+.hoyre {
+  grid-area: 2 / 3;
+}
+.bakover {
+  grid-area: 3 / 2;
+}
+
+.kontrollhjul .stopp {
+  border-color: #ff8891;
+  background: linear-gradient(#d74655, #942434);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+@media (hover: hover) {
+  .kontrollhjul .retning:hover {
+    background: #345e7c;
+    box-shadow: 0 0 16px #66d9ef40;
+  }
+
+  .kontrollhjul .stopp:hover {
+    background: #d74655;
+  }
+}
+
+/* Vis visuelt at knappen trykkes inn. */
+.kontrollhjul button:active {
+  transform: scale(0.92);
+}
+
+/* Tydelig markering ved navigering med tastaturet. */
+.kontrollhjul button:focus-visible {
+  outline: 3px solid #83eaff;
+  outline-offset: 3px;
+}
+
+#status {
+  min-height: 42px;
+  margin: 24px 0 0;
+  color: #b9cce0;
+  font-size: 14px;
+}
+
+/* På små skjermer kommer kontrollpanelet under kameraet. */
+@media (max-width: 800px) {
+  .paneler {
+    grid-template-columns: 1fr;
+  }
+}
