@@ -6,34 +6,70 @@
 
     <title>Robotbil</title>
 
-    <!-- Last JavaScript etter at HTML-en er lest. -->
+    <!-- CSS bestemmer hvordan siden ser ut. -->
+    <link rel="stylesheet" href="/style.css" />
+
     <script src="/app.js" defer></script>
   </head>
   <body>
-    <h1>Robotbil</h1>
+    <main>
+      <header>
+        <p class="overtekst">C++ · ROBOTPROSJEKT</p>
+        <h1>Robotbil</h1>
+      </header>
 
-    <section>
-      <h2>Kamera</h2>
+      <div class="paneler">
+        <section class="panel kamera-panel">
+          <h2>Kamera</h2>
 
-      <!-- JavaScript setter bildeadressen og oppdaterer bildet. -->
-      <img
-        id="kamerabilde"
-        alt="Venter på kamerabilde"
-        style="display: block; max-width: 100%; width: 640px"
-      />
-    </section>
+          <!-- JavaScript starter bildeoppdateringen. -->
+          <img id="kamerabilde" alt="Venter på kamerabilde" />
+        </section>
 
-    <section>
-      <h2>Styring</h2>
+        <section class="panel styring-panel">
+          <h2>Kontrollpanel</h2>
 
-      <!-- JavaScript leser kommandoen fra data-kommando. -->
-      <button type="button" data-kommando="fremover">Fremover</button>
-      <button type="button" data-kommando="bakover">Bakover</button>
-      <button type="button" data-kommando="venstre">Venstre</button>
-      <button type="button" data-kommando="hoyre">Høyre</button>
-      <button type="button" data-kommando="stopp">Stopp</button>
+          <div class="kontrollhjul" role="group" aria-label="Styrekommandoer">
+            <button
+              type="button"
+              class="retning fremover"
+              data-kommando="fremover"
+            >
+              <span class="pil" aria-hidden="true">↑</span>
+              <span>Fremover</span>
+            </button>
 
-      <p id="status" aria-live="polite">Venter på kommando.</p>
-    </section>
+            <button
+              type="button"
+              class="retning venstre"
+              data-kommando="venstre"
+            >
+              <span class="pil" aria-hidden="true">←</span>
+              <span>Venstre</span>
+            </button>
+
+            <button type="button" class="stopp" data-kommando="stopp">
+              STOPP
+            </button>
+
+            <button type="button" class="retning hoyre" data-kommando="hoyre">
+              <span class="pil" aria-hidden="true">→</span>
+              <span>Høyre</span>
+            </button>
+
+            <button
+              type="button"
+              class="retning bakover"
+              data-kommando="bakover"
+            >
+              <span class="pil" aria-hidden="true">↓</span>
+              <span>Bakover</span>
+            </button>
+          </div>
+
+          <p id="status" aria-live="polite">Venter på kommando.</p>
+        </section>
+      </div>
+    </main>
   </body>
 </html>
